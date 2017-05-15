@@ -1,0 +1,351 @@
+\documentclass[a4paper]{article}
+
+%%%%%%%%%%%%%%%%%%page size%%%%%%%%%%%%%%%%%%
+% \paperwidth=65cm
+% \paperheight=160cm
+
+%%%%%%%%%%%%%%%%%%%Package%%%%%%%%%%%%%%%%%%%
+\usepackage[margin=3cm]{geometry}
+\usepackage{mathtools,amsthm,amssymb}
+\usepackage{yhmath}
+\usepackage{graphicx}
+\usepackage{fontspec}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{fancyhdr}
+%\usepackage{tabu}
+%\usepackage{booktabs}
+\usepackage[square, comma, numbers, super, sort&compress]{natbib}
+\usepackage[unicode, pdfborder={0 0 0}, bookmarksdepth=-1]{hyperref}
+\usepackage[usenames, dvipsnames]{color}
+\usepackage[shortlabels, inline]{enumitem}
+\usepackage{xpatch}
+
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{optidef}
+
+%\usepackage[abbreviations]{siunitx}
+\usepackage{mdframed}
+%\usepackage{multicol}
+%\usepackage{dsfont}
+%\usepackage{setspace}
+%\usepackage{tabto}
+%\usepackage{soul}
+%\usepackage{ulem}
+%\usepackage{wrapfig}
+%\usepackage{floatflt}
+
+%%%%%%%%%%%%%%%%%%%TikZ%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows,shapes}
+\usetikzlibrary{positioning}
+\tikzstyle{every picture}+=[remember picture]
+
+% chinese environment with xelatex
+\usepackage[CheckSingle, CJKmath]{xeCJK}
+\usepackage{CJKulem}
+\setCJKmainfont[BoldFont=Noto Sans CJK TC Bold]{Noto Serif CJK TC}
+\setCJKsansfont[BoldFont=Noto Sans CJK TC Bold]{Noto Serif CJK TC}
+\setCJKmonofont[BoldFont=Noto Sans CJK TC Bold]{Noto Serif CJK TC}
+
+%%%%%%%%%%%%%%%%%font size%%%%%%%%%%%%%%%%%%%
+%\def\normalsize{\fontsize{10}{15}\selectfont}
+%\def\large{\fontsize{12}{18}\selectfont}
+%\def\Large{\fontsize{14}{21}\selectfont}
+%\def\LARGE{\fontsize{16}{24}\selectfont}
+%\def\huge{\fontsize{18}{27}\selectfont}
+%\def\Huge{\fontsize{20}{30}\selectfont}
+
+%%%%%%%%%%%%%%%Theme Input%%%%%%%%%%%%%%%%%%%
+%\input{themes/chapter/neat}
+%\input{themes/env/problist}
+
+%%%%%%%%%%%titlesec settings%%%%%%%%%%%%%%%%%
+%\titleformat{\chapter}{\bf\Huge}
+            %{\arabic{section}}{0em}{}
+%\titleformat{\section}{\centering\Large}
+            %{\arabic{section}}{0em}{}
+%\titleformat{\subsection}{\large}
+            %{\arabic{subsection}}{0em}{}
+%\titleformat{\subsubsection}{\bf\normalsize}
+            %{\arabic{subsubsection}}{0em}{}
+%\titleformat{command}[shape]{format}{label}
+            %{gutter}{before}[after]
+
+%%%%%%%%%%%%variable settings%%%%%%%%%%%%%%%%
+%\numberwithin{equation}{section}
+%\setcounter{secnumdepth}{4}
+%\setcounter{tocdepth}{1}
+%\setcounter{section}{0}
+%\graphicspath{{images/}}
+
+%%%%%%%%%%%%%%%page settings%%%%%%%%%%%%%%%%%
+%\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\setlength{\headheight}{15pt}  % with titling
+\setlength{\droptitle}{-1.5cm}
+%\posttitle{\par\end{center}}  % distance between title and content
+\parindent=0pt % indent size
+%\parskip=1ex    % line space
+%\pagestyle{empty}  % empty: no page number
+%\pagestyle{fancy}  % fancy: fancyhdr
+
+% use with fancygdr
+%\lhead{\leftmark}
+%\chead{}
+%\rhead{}
+%\lfoot{}
+%\cfoot{}
+%\rfoot{\thepage}
+%\renewcommand{\headrulewidth}{0.4pt}
+%\renewcommand{\footrulewidth}{0.4pt}
+
+%\fancypagestyle{firststyle}
+%{
+  %\fancyhf{}
+  %\fancyfoot[C]{\footnotesize Page \thepage\ of \pageref{LastPage}}
+  %\renewcommand{\headrule}{\rule{\textwidth}{\headrulewidth}}
+%}
+
+%%%%%%%%%%%%%%%renew command%%%%%%%%%%%%%%%%%
+% \renewcommand{\contentsname}{Table of Content}
+% \renewcommand{\refname}{Reference}
+\renewcommand{\abstractname}{\LARGE Abstract}
+
+%%%%%%%%symbol and function settings%%%%%%%%%
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\inpd}{\langle}{\rangle} % inner product
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclareMathOperator{\adj}{adj}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+\DeclareMathOperator{\arcsec}{arcsec}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arccsc}{arccsc}
+\DeclareMathOperator{\arccosh}{arccosh}
+\DeclareMathOperator{\arcsinh}{arcsinh}
+\DeclareMathOperator{\arctanh}{arctanh}
+\DeclareMathOperator{\arcsech}{arcsech}
+\DeclareMathOperator{\arccsch}{arccsch}
+\DeclareMathOperator{\arccoth}{arccoth}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newcommand*{\Nb}{\mathbb{N}}
+\newcommand*{\Zb}{\mathbb{Z}}
+\newcommand*{\Qb}{\mathbb{Q}}
+\newcommand*{\Rb}{\mathbb{R}}
+\newcommand*{\Cb}{\mathbb{C}}
+\newcommand*{\Xc}{\mathcal{X}}
+
+\DeclareMathOperator{\Pb}{\mathbb{P}}
+\DeclareMathOperator{\Eb}{\mathbb{E}}
+\DeclareMathOperator{\Ord}{\mathcal{O}}
+
+%\newcommand*{\KL}[2]{D_\text{KL}\left( {#1} \middle\| {#2} \right)}
+\DeclarePairedDelimiterXPP{\KL}[2]{D_\text{KL}}\lparen\rparen{}{{#1} \delimsize\Vert {#2}}
+\DeclarePairedDelimiterXPP{\Prob}[1]{\Pb}\lbrace\rbrace{}{#1}
+\DeclarePairedDelimiterXPP{\Ev}[1]{\Eb}\lbrack\rbrack{}{#1}
+\DeclarePairedDelimiterXPP{\Evr}[2]{\Eb_{#1}}\lbrack\rbrack{}{#2}
+%\newcommand*{\Evr}[2]{\Eb_{#1} \left[{#2}\right]}
+
+% just to make sure it exists
+\providecommand\given{}
+% can be useful to refer to this outside \Set
+\newcommand*\SetSymbol[1][]{%
+  \nonscript\:#1\vert
+  \allowbreak
+  \nonscript\:
+\mathopen{}}
+\DeclarePairedDelimiterX\Set[1]\{\}{%
+  \renewcommand\given{\SetSymbol[\delimsize]}
+  \,#1\,
+}
+
+\DeclarePairedDelimiterX\Gen[1]{\langle}{\rangle}{%
+  \renewcommand\given{\SetSymbol[\delimsize]}
+  \,#1\,
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\renewcommand{\proofname}{\bf proof:}
+\newtheoremstyle{mystyle}% custom style
+  {6pt}{15pt}%      top and bottom margin
+  {}%               content style
+  {}%               indent
+  {\bf}%            head style
+  {.}%              after head
+  {1em}%            distance between head and content
+  {}%               Theorem head spec (can be left empty, meaning 'normal')
+
+\theoremstyle{mystyle}
+\newtheorem{theorem}{Theorem}
+\newtheorem{coro}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem{property}{Property}
+
+%%%%%%%%%%%%%%Title information%%%%%%%%%%%%%%
+\title{Advanced Algorithms}
+\author{Yao-Wen Mao}
+\date{\today}
+
+\begin{document}
+\maketitle
+% \thispagestyle{empty}
+% \thispagestyle{fancy}
+% \tableofcontents
+%%%%%%%%%%%%%include file here%%%%%%%%%%%%%%%
+\section*{Notation}
+\begin{itemize}
+  \item $\Prob{ \text{event} }$ denote the probability of the event.
+  \item $\Ev{X}$ denote the expected value of the random variable $X$.
+  \item Let $P, Q$ be two distribution defined on the sample space $\Xc$.
+    $\KL{P}{Q}$ denote the KL-divergence from $Q$ to $P$.
+    \[
+      \KL{P}{Q} = \Evr*{X \sim P(\cdot)}{\log \frac{P(x)}{Q(x)}}
+    \]
+  \item Use $B_p$ denote the Bernoulli distribution:
+    $ B_p(1) = p, B_p(0) = 1 - p. $
+  \item We write $\KL{p}{q} = \KL{B_p}{B_q}$ for convenience.
+\end{itemize}
+
+\setcounter{section}{-1}
+\section{Recap - Hashing}
+\begin{itemize}
+  \item {\tt INS}/{\tt DEL}/{\tt search} in $\Ord(1)$ time.
+  \item Uniform hashing, put $n$ items into $n$ slots.
+    $\max n_i = \Theta\left( \frac{\log n}{\log \log n} \right)$,
+    where $n_i$ is \# of items in the $i$-th slot.
+  \item 2-universal Hashing.
+  \item Perfect Hashing.
+\end{itemize}
+
+\section{Chernoff Bound}
+\begin{theorem}[Chernoff Bound]
+  Let $X_1, \dots, X_n$ be $n$ independent binary random variables with
+  $\Eb[X_i] = p_i$, i.e.
+  \[
+      \Prob{X_i = 1} = p_i \qquad \Prob{X_i = 0} = 1 - p_i
+  \]
+  Let $X = \frac{1}{n} \sum_{i=1}^n X_i$ and $p = \frac{1}{n} \sum_{i=1}^n p_i$.
+  Then
+  \begin{align*}
+    \Prob{ X \ge p + \lambda } \le \exp(-n \KL{p+\lambda}{p}), & \quad
+    0 \le \lambda \le 1 - p \\
+    \Prob{ X \ge p - \lambda } \le \exp(-n \KL{p-\lambda}{p}), & \quad
+    0 \le \lambda \le p
+  \end{align*}
+
+  \begin{proof}
+    First, we know the Markov's inequality: $\Prob{X \ge a} \le \frac{\Ev{X}}{a}$.
+    Then consider the random variable $e^{tnX}$ for some $t > 0$, we have
+    \[
+      \Prob{X \ge a} = \Prob{e^{tnX} \ge e^{tna}} \le \frac{\Ev*{e^{tnX}}}{e^{tna}}
+    \]
+    Let $q = p + \lambda$, then we can write
+    \begin{align*}
+      \Prob{X \ge q} &\le e^{-tnq} \Ev*{e^{tnX}} \\
+                     &= e^{-tnq} \left( \prod_{i=1}^n \Ev*{e^{tX_i}} \right)
+                     && \text{(Since $X_i$ are independent)}\\
+                     &\le e^{-tnq} \left(\frac{1}{n} \sum_{i=1}^n \Ev*{e^{tX_i}} \right)^n
+                     && \text{(GM-AM inequality)}\\
+                     &\le e^{-tnq} \left(\frac{1}{n} \sum_{i=1}^n p_i e^t + (1 - p_i) \right)^n \\
+                     &\le e^{-tnq} (p e^t + (1 - p))^n \\
+                     &= \big(p e^{(1-q)t} + (1-p)e^{-qt}\big)^n
+    \end{align*}
+    So $\Prob{X \ge q} \le \inf\limits_{t > 0} \big(p e^{(1-q)t} + (1-p)e^{-qt}\big)^n$.
+    Let $f(t) = p e^{(1-q)t} + (1-p)e^{-qt}$, then we can compute
+    \[
+      \frac{\mathrm{d} f}{\mathrm{d} t}
+      = (1-q)p e^{(1-q)t} - q(1-p)e^{-qt} = 0
+      \implies 
+      e^t = \frac{q}{1-q}\frac{1-p}{p}
+    \]
+    then we can get
+    \begin{align*}
+      \Prob{X \ge q}
+      &\le \left(\left(\frac{q}{1-q}\frac{1-p}{p} \right)^{-q} \frac{1-p}{1-q}\right)^n \\
+      &\le \exp \left( -n \left( q \ln \frac{q}{1-q}\frac{1-p}{p} + \ln \frac{1-q}{1-p} \right)\right)\\
+      &= \exp \left( -n \left( q \ln \frac{q}{p} + (1-q) \ln \frac{1-q}{1-p} \right)\right)\\
+      &= \exp(-n \KL{p+\lambda}{p}).
+      \qedhere
+    \end{align*}
+  \end{proof}
+\end{theorem}
+
+\begin{coro} \mbox{}
+  \begin{itemize}
+    \item $\Prob{X \ge p + \lambda} \le \exp(-2n\lambda^2)$.
+    \item $\Prob{X \ge p - \lambda} \le \exp(-2n\lambda^2)$.
+    \item $\Prob{X \ge (1+\beta)p} \le \exp\left(\frac{-np\beta^2}{2+\beta}\right),
+      \quad \beta > 0$.
+    \item $\Prob{X \ge (1+\beta)p} \le \exp\left(\frac{-np\beta^2}{3}\right),
+      \quad 0 < \beta \le 1$.
+    \item $\Prob{X \ge (1-\beta)p} \le \exp\left(\frac{-np\beta^2}{2}\right),
+      \quad 0 < \beta < 1$.
+    \item $\Prob{X \ge ep} \le e^{-np}$.
+  \end{itemize}
+\end{coro}
+
+\section{Power of 2 Choices}
+We want to put $n$ balls into $n$ bins.
+Let $b_i$ denote the number of balls in the $i$-th bin.
+\begin{itemize}
+  \item For any ball $j$, pick $2$ bins $a_{j1}, a_{j2}$ uniformly at random.
+  \item For $j = 1$ to $n$:
+    \begin{itemize}
+      \item Let $b_{ji}$ denote the number of balls in the $i$-th bin.
+      \item put ball $j$ into the bin $\argmin\limits_{s \in \{ a_{i1}, a_{i2} \}} b_{js}$,
+        i.e. the bin with less balls at the moment.
+    \end{itemize}
+\end{itemize}
+Then $\Ev{ \max_i b_i } = \Ord(\log \log n)$.
+
+\begin{proof} \mbox{}
+  \begin{itemize}
+    \item Let $B_k \triangleq \abs[\big ]{\Set{ i \given b_i \ge k }}$.
+    \item Now we prove by induction on $k$:
+      \begin{itemize}
+        \item Assume $B_k \le \beta_k$ with high probability
+          ($\Prob{B_k > \beta_k} \le \frac{1}{n^2}$).
+        \item For any ball $j$, 
+      \end{itemize}
+  \end{itemize}
+\end{proof}
+
+\section{Dynamic Resizing}
+想法：偶爾把整個 hash table 打掉重建，並讓複雜度均攤到各個操作上。
+
+{\tt INS}/{\tt DEL}/{\tt search}: the same.
+
+Let $n$ denote the number of elements, $m$ denote the number of slots.
+
+\begin{enumerate}
+  \item When $n = m$, reconstruct the hash table with size $2m$.
+  \item When $n \le \frac{m}{4}$, reconstruct the hash table with size $\frac{m}{2}$.
+\end{enumerate}
+
+\underline{Observation:} After each reconstruction, $n = \frac{m}{2}$.
+
+\section{Consistent Hashing}
+\begin{theorem}
+  $\Prob*{\max_i (a_{i+1} - a_i) \ge \frac{2 \ln m}{m}}$ is small.
+\end{theorem}
+\begin{theorem}
+  With prob. $\Omega(1)$, $\exists$ one interval of size $\le \frac{1}{m^2}$.
+\end{theorem}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \bibliographystyle{plain}
+% \bibliography{journal.bib}
+% \begin{thebibliography}{99}
+% \bibitem[1]{ex}\url{http://www.example.com/}
+% \end{thebibliography}
+\end{document}
