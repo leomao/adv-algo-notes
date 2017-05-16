@@ -193,7 +193,7 @@
 \newtheorem{property}{Property}
 
 %%%%%%%%%%%%%%Title information%%%%%%%%%%%%%%
-\title{Advanced Algorithms}
+\title{Advanced Algorithms week 12} 
 \author{Yao-Wen Mao}
 \date{\today}
 
@@ -231,28 +231,28 @@
 \section{Chernoff Bound}
 \begin{theorem}[Chernoff Bound]
   Let $X_1, \dots, X_n$ be $n$ independent binary random variables with
-  $\Eb[X_i] = p_i$, i.e.
+  $\Ev{X_i} = p_i$, i.e.
   \[
       \Prob{X_i = 1} = p_i \qquad \Prob{X_i = 0} = 1 - p_i
   \]
-  Let $X = \frac{1}{n} \sum_{i=1}^n X_i$ and $p = \frac{1}{n} \sum_{i=1}^n p_i$.
-  Then
+  Let $X = \sum_{i=1}^n X_i, \mu = \Ev{X} = \sum_{i=1}^n p_i$ and $p = \frac{\mu}{n}$.
+  Set $\lambda = n\delta$, then
   \begin{align*}
-    \Prob{ X \ge p + \lambda } \le \exp(-n \KL{p+\lambda}{p}), & \quad
-    0 \le \lambda \le 1 - p \\
-    \Prob{ X \ge p - \lambda } \le \exp(-n \KL{p-\lambda}{p}), & \quad
-    0 \le \lambda \le p
+    \Prob{ X \ge \mu + \lambda } \le \exp(-n \KL{p+\delta}{p}), & \quad
+    0 \le \delta \le 1 - p \\
+    \Prob{ X \ge \mu - \lambda } \le \exp(-n \KL{p-\delta}{p}), & \quad
+    0 \le \delta \le p
   \end{align*}
 
   \begin{proof}
     First, we know the Markov's inequality: $\Prob{X \ge a} \le \frac{\Ev{X}}{a}$.
-    Then consider the random variable $e^{tnX}$ for some $t > 0$, we have
+    Then consider the random variable $e^{tX}$ for some $t > 0$, we have
     \[
-      \Prob{X \ge a} = \Prob{e^{tnX} \ge e^{tna}} \le \frac{\Ev*{e^{tnX}}}{e^{tna}}
+      \Prob{X \ge a} = \Prob{e^{tX} \ge e^{ta}} \le \frac{\Ev*{e^{tX}}}{e^{ta}}
     \]
-    Let $q = p + \lambda$, then we can write
+    Let $q \in [0, 1]$. We can write
     \begin{align*}
-      \Prob{X \ge q} &\le e^{-tnq} \Ev*{e^{tnX}} \\
+      \Prob{X \ge nq} &\le e^{-tnq} \Ev*{e^{tX}} \\
                      &= e^{-tnq} \left( \prod_{i=1}^n \Ev*{e^{tX_i}} \right)
                      && \text{(Since $X_i$ are independent)}\\
                      &\le e^{-tnq} \left(\frac{1}{n} \sum_{i=1}^n \Ev*{e^{tX_i}} \right)^n
@@ -261,7 +261,7 @@
                      &\le e^{-tnq} (p e^t + (1 - p))^n \\
                      &= \big(p e^{(1-q)t} + (1-p)e^{-qt}\big)^n
     \end{align*}
-    So $\Prob{X \ge q} \le \inf\limits_{t > 0} \big(p e^{(1-q)t} + (1-p)e^{-qt}\big)^n$.
+    So $\Prob{X \ge nq} \le \inf\limits_{t > 0} \big(p e^{(1-q)t} + (1-p)e^{-qt}\big)^n$.
     Let $f(t) = p e^{(1-q)t} + (1-p)e^{-qt}$, then we can compute
     \[
       \frac{\mathrm{d} f}{\mathrm{d} t}
@@ -271,53 +271,91 @@
     \]
     then we can get
     \begin{align*}
-      \Prob{X \ge q}
+      \Prob{X \ge nq}
       &\le \left(\left(\frac{q}{1-q}\frac{1-p}{p} \right)^{-q} \frac{1-p}{1-q}\right)^n \\
       &\le \exp \left( -n \left( q \ln \frac{q}{1-q}\frac{1-p}{p} + \ln \frac{1-q}{1-p} \right)\right)\\
       &= \exp \left( -n \left( q \ln \frac{q}{p} + (1-q) \ln \frac{1-q}{1-p} \right)\right)\\
-      &= \exp(-n \KL{p+\lambda}{p}).
-      \qedhere
+      &= \exp(-n \KL{q}{p}).
     \end{align*}
+    Set $q = p + \delta \leadsto nq = \mu + \lambda$, then
+    \[
+      \Prob{X \ge \mu + \lambda} \le \exp(-n \KL{p+\delta}{p}).  \qedhere
+    \]
   \end{proof}
 \end{theorem}
 
 \begin{coro} \mbox{}
   \begin{itemize}
-    \item $\Prob{X \ge p + \lambda} \le \exp(-2n\lambda^2)$.
-    \item $\Prob{X \ge p - \lambda} \le \exp(-2n\lambda^2)$.
-    \item $\Prob{X \ge (1+\beta)p} \le \exp\left(\frac{-np\beta^2}{2+\beta}\right),
+    \item $\Prob{X \ge \mu + \lambda} \le \exp\left(\frac{-2\lambda^2}{n}\right)$.
+    \item $\Prob{X \ge \mu - \lambda} \le \exp\left(\frac{-2\lambda^2}{n}\right)$.
+    \item $\Prob{X \ge (1+\beta)\mu} \le \exp\left(\frac{-\mu\beta^2}{2+\beta}\right),
       \quad \beta > 0$.
-    \item $\Prob{X \ge (1+\beta)p} \le \exp\left(\frac{-np\beta^2}{3}\right),
+    \item $\Prob{X \ge (1+\beta)\mu} \le \exp\left(\frac{-\mu\beta^2}{3}\right),
       \quad 0 < \beta \le 1$.
-    \item $\Prob{X \ge (1-\beta)p} \le \exp\left(\frac{-np\beta^2}{2}\right),
+    \item $\Prob{X \ge (1-\beta)\mu} \le \exp\left(\frac{-\mu\beta^2}{2}\right),
       \quad 0 < \beta < 1$.
-    \item $\Prob{X \ge ep} \le e^{-np}$.
+    \item $\Prob{X \ge e\mu} \le e^{-\mu}$.
   \end{itemize}
 \end{coro}
 
+\begin{mdframed}
+  Note that $\Prob{X \ge e\mu} \le e^{-\mu}$ is deduced from
+  \[
+    \Prob{X \ge (1+\beta)\mu} \le \left(\frac{e^\beta}{(1+\beta)^{(1+\beta)}}\right)^\mu
+  \]
+\end{mdframed}
+
+\newpage
+
 \section{Power of 2 Choices}
 We want to put $n$ balls into $n$ bins.
-Let $b_i$ denote the number of balls in the $i$-th bin.
 \begin{itemize}
   \item For any ball $j$, pick $2$ bins $a_{j1}, a_{j2}$ uniformly at random.
   \item For $j = 1$ to $n$:
     \begin{itemize}
-      \item Let $b_{ji}$ denote the number of balls in the $i$-th bin.
+      \item Let $b_{ji}$ denote the number of balls in the $i$-th bin
+        at the moment.
       \item put ball $j$ into the bin $\argmin\limits_{s \in \{ a_{i1}, a_{i2} \}} b_{js}$,
         i.e. the bin with less balls at the moment.
     \end{itemize}
 \end{itemize}
-Then $\Ev{ \max_i b_i } = \Ord(\log \log n)$.
+Let $S_i$ denote the set of balls in the $i$-th bin and $b_i = \abs{S_i}$.
+Then ${\color{blue} \Ev{ \max_i b_i } = \Ord(\log \log n)}$.
 
 \begin{proof} \mbox{}
   \begin{itemize}
-    \item Let $B_k \triangleq \abs[\big ]{\Set{ i \given b_i \ge k }}$.
+    \item Let $B_k \triangleq \abs[\big ]{\Set{ i \given b_i \ge k }}$,
+      i.e. the number of bins with balls $\ge i$.
     \item Now we prove by induction on $k$:
-      \begin{itemize}
+      \begin{enumerate}
         \item Assume $B_k \le \beta_k$ with high probability
           ($\Prob{B_k > \beta_k} \le \frac{1}{n^2}$).
-        \item For any ball $j$, 
-      \end{itemize}
+        \item For any ball $j$, assume $j \in S_t$. We say it is red if
+          $\abs{\Set{ i \given i < j \text{ and } i \in S_t}} \ge k$,
+          i.e. there are at least $k$ balls put into $t$-th bin before $j$.
+        \item $\Prob{ \text{ball $j$ is red }} \le \left(\frac{\beta_k}{n}\right)^2$
+          since we need to pick two bins with at least $k$ balls.
+        \item $\Ev{B_{k+1}} \le \Ev{ \text{\# of red balls} } \le
+          n\left(\frac{\beta_k}{n}\right)^2$.
+        \item Using chernoff bound, we get
+          $\Prob{B_{k+1} \ge e\frac{\beta_k^2}{n}} \le e^{-\frac{\beta_k^2}{n}}$.
+          If $e^{-\frac{\beta_k^2}{n}}$ is small enough, then we can set
+          $\beta_{k+1} = e\frac{\beta_k^2}{n}$.
+        \item Then $\frac{\beta_{k+1}}{n} = e\left(\frac{\beta_k}{n}\right)^2
+          \implies \frac{\beta_{k+m}}{n} = e^{-1} \left(\frac{e\beta_k}{n}\right)^{2^m}$.
+          Notice that $\beta_6 \le \frac{n}{6} \le \frac{n}{2e}
+          \implies \frac{\beta_{6+m}}{n} \le e^{-1} \frac{1}{2^{2^m}}$.
+          So when $m = \Ord(\log \log n)$, we can find $\beta_{6+m} < 1$.
+        \item If the prob. in 5 is not small enough, say
+          $e^{-\frac{\beta_k^2}{n}} > \frac{1}{n^2} \implies \beta_k < \sqrt{2n \ln n}$.
+        \item Then $\Ev{B_{k+1}} \le \frac{\beta_k^2}{n} < 2 \ln n
+          \implies \Prob{B_{k+1} \ge 6 \ln n} < \frac{1}{n}$.
+        \item $\Prob{B_{k+2} \ge 1} \ke n \left(\frac{6 \ln n}{n}\right)^2
+          = \Ord\left(\frac{\log^2 n}{n}\right)$.
+      \end{enumerate}
+    \item By 6 and 9, we can conclude that 
+      ${\color{blue} \Ev{ \max_i b_i } = \Ord(\log \log n)}$.
+      \qedhere
   \end{itemize}
 \end{proof}
 
@@ -335,9 +373,47 @@ Let $n$ denote the number of elements, $m$ denote the number of slots.
 
 \underline{Observation:} After each reconstruction, $n = \frac{m}{2}$.
 
+Now we check the amortized complexity of two types of reconstruction:
+\begin{enumerate}
+  \item If $n = m$, then there are at least $\frac{m}{2}$ operations between two
+    reconstruction. The cost of reconstruction is $\Ord(m)$, so the amortized
+    cost is $\Ord(1)$.
+  \item If $n \le \frac{m}{4}$, then there are at least $\frac{m}{4}$ operations
+    between two reconstruction. The cost of reconstruction is $\Ord(m)$, so the
+    amortized cost is $\Ord(1)$.
+\end{enumerate}
+
 \section{Consistent Hashing}
+\begin{enumerate}
+  \item Pick $a_1, \dots, a_m \in [0, 1]$ uniformly at random (independently).
+    WLOG, assume $a_1 < a_2 < \dots < a_m$.
+  \item Assume we have a hash function $h$ s.t. for each element (key),
+    we can map it to $h(k) \in [0, 1]$ uniformly at random.
+  \item Define $I(i) = \begin{cases}
+      (a_{i-1}, a_i], & i > 1, \\
+      (a_m, 1] \cup [0, a_1], & i = 1.
+    \end{cases}$ If $h(k) \in I(i)$, then put $k$ into the slot $i$.
+    (Note: the complexity of this operation is $\Ord(\log m)$)
+  \item To add one more slot:
+    \begin{itemize}
+      \item Sample $a_{m+1}$ from $[0, 1]$ uniformly at random.
+      \item Assume $a_{m+1} \in I(i)$, then use $a_{m+1}$ as a pivot to break
+        $I(i)$ into two part, and move all elements whose $h(k)$ is in the
+        first part into the new slot.
+      \item Since $\Ev{\abs{I(i)}} = \frac{1}{m+1}$, we have
+        $\Ev{\text{\#  of elements to move}} = \frac{n}{m+1}$.
+    \end{itemize}
+\end{enumerate}
+
 \begin{theorem}
   $\Prob*{\max_i (a_{i+1} - a_i) \ge \frac{2 \ln m}{m}}$ is small.
+  \begin{proof}
+    \begin{align*}
+      \Prob*{\max_i (a_{i+1} - a_i) \ge \frac{2 \ln m}{m}}
+      &\le \left(1 - \frac{2 \ln m}{m}\right)^{m-2} \\
+      &\le \frac{1}{m^2} \qedhere
+    \end{align*}
+  \end{proof}
 \end{theorem}
 \begin{theorem}
   With prob. $\Omega(1)$, $\exists$ one interval of size $\le \frac{1}{m^2}$.
