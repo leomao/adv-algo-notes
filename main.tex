@@ -240,7 +240,7 @@
   \begin{align*}
     \Prob{ X \ge \mu + \lambda } \le \exp(-n \KL{p+\delta}{p}), & \quad
     0 \le \delta \le 1 - p \\
-    \Prob{ X \ge \mu - \lambda } \le \exp(-n \KL{p-\delta}{p}), & \quad
+    \Prob{ X \le \mu - \lambda } \le \exp(-n \KL{p-\delta}{p}), & \quad
     0 \le \delta \le p
   \end{align*}
 
@@ -350,7 +350,7 @@ Then ${\color{blue} \Ev{ \max_i b_i } = \Ord(\log \log n)}$.
           $e^{-\frac{\beta_k^2}{n}} > \frac{1}{n^2} \implies \beta_k < \sqrt{2n \ln n}$.
         \item Then $\Ev{B_{k+1}} \le \frac{\beta_k^2}{n} < 2 \ln n
           \implies \Prob{B_{k+1} \ge 6 \ln n} < \frac{1}{n}$.
-        \item $\Prob{B_{k+2} \ge 1} \ke n \left(\frac{6 \ln n}{n}\right)^2
+        \item $\Prob{B_{k+2} \ge 1} \le n \left(\frac{6 \ln n}{n}\right)^2
           = \Ord\left(\frac{\log^2 n}{n}\right)$.
       \end{enumerate}
     \item By 6 and 9, we can conclude that 
